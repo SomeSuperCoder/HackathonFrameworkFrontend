@@ -1,4 +1,10 @@
-import { init, initData, viewport, type User } from "@telegram-apps/sdk";
+import {
+    init,
+    initData,
+    retrieveLaunchParams,
+    viewport,
+    type User,
+} from "@telegram-apps/sdk";
 import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import { TelegramUserContext, UserContext } from "./lib/context";
@@ -7,10 +13,15 @@ import { userDriver } from "./api/user";
 import Participant from "./pages/Participant";
 
 init();
+const isDesktop = ["macos", "tdesktop", "unigram"].includes(
+    retrieveLaunchParams().tgWebAppPlatform,
+);
 await viewport.mount();
 initData.restore();
 // viewport.expand();
-await viewport.requestFullscreen();
+if (isDesktop) {
+    await viewport.requestFullscreen();
+}
 
 export default function App() {
     const [tgUser, setTgUser] = useState<User | undefined>(undefined);

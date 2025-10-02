@@ -6,19 +6,19 @@ import Cases from "./participant/Cases";
 
 export default function Participant() {
     return (
-        <Tabs defaultValue="main_page">
+        <Tabs className="h-screen" defaultValue="main_page">
             <TabsList className="w-screen">
-                <TabsTrigger value="main_page">Main page</TabsTrigger>
-                <TabsTrigger value="my_team">My Team</TabsTrigger>
-                <TabsTrigger value="cases">Cases</TabsTrigger>
+                <TabsTrigger value="main_page">О хакатоне</TabsTrigger>
+                <TabsTrigger value="my_team">Моя команда</TabsTrigger>
+                <TabsTrigger value="cases">Кейсы</TabsTrigger>
             </TabsList>
-            <TabsContent value="main_page">
+            <TabsContent className="h-full" value="main_page">
                 <MainPage />
             </TabsContent>
-            <TabsContent value="my_team">
+            <TabsContent className="h-full" value="my_team">
                 <MyTeam />
             </TabsContent>
-            <TabsContent value="cases">
+            <TabsContent className="h-full" value="cases">
                 <Cases />
             </TabsContent>
         </Tabs>
