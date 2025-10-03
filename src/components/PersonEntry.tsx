@@ -16,6 +16,7 @@ export default function PersonEntry(props: { user: ParsedUser }) {
             </div>
             <Button
                 variant="outline"
+                size="sm"
                 onClick={() =>
                     openTelegramLink(`https://t.me/${user.username}`)
                 }

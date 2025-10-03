@@ -9,25 +9,29 @@ import { ParseTeam, teamDriver } from "@/api/team";
 import { ParseUser } from "@/api/user";
 import InfoAlert from "@/components/InfoAlert";
 import ErrorAlert from "@/components/ErrorAlert";
+import UploadSolution from "@/components/UploadSolution";
 
 export default function MyTeam() {
     const user = useContext(UserContext)!;
 
     const {
+        data: team,
+        isLoading: teamIsLoading,
+        isError: teamIsError,
+    } = useQuery({
+        queryKey: ["team", user.team],
+        queryFn: async () => ParseTeam(await teamDriver.getTeamByID(user.team)),
+    });
+    const {
         data: members,
-        isLoading,
-        isError,
+        isLoading: membersAreLoading,
+        isError: membersIsError,
     } = useQuery({
         queryKey: ["members", user.team],
         queryFn: async () =>
             (await teamDriver.getTeamMembers(user.team)).map((user) =>
                 ParseUser(user),
             ),
-    });
-
-    const { data: team } = useQuery({
-        queryKey: ["team", user.team],
-        queryFn: async () => ParseTeam(await teamDriver.getTeamByID(user.team)),
     });
 
     if (user.team.equals(NullObjectID)) {
@@ -48,20 +52,21 @@ export default function MyTeam() {
         );
     }
 
-    if (isLoading) {
-        return <InfoAlert className="Загрузка..." />;
+    if (teamIsLoading || membersAreLoading) {
+        return <InfoAlert message="Загрузка..." />;
     }
 
-    if (isError) {
-        return <ErrorAlert className="Ошибка загрузки" />;
+    if (teamIsError || membersIsError) {
+        return <ErrorAlert message="Ошибка загрузки" />;
     }
 
     return (
-        <div className="flex flex-col items-center mt-4 gap-2">
+        <div className="flex flex-col items-center mt-4 gap-4">
             <h1 className="scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance">
                 {team?.name}
             </h1>
-            <div className="flex flex-col items-center">
+            {team?.leader.equals(user._id) && <UploadSolution team={team} />}
+            <div className="flex flex-col items-center gap-1">
                 <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
                     Участники
                 </h3>
