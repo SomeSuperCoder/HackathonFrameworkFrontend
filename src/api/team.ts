@@ -1,6 +1,7 @@
 import type ObjectID from "bson-objectid";
 import { axiosInstance } from "./axios";
 import type { ISearchable } from "./searchable";
+import type { User } from "./user";
 
 export interface TeamsPaged {
     teams: Team[];
@@ -23,6 +24,10 @@ export const teamDriver = {
         return (
             await axiosInstance.get(`/api/teams/?page=${page}&limit=${limit}`)
         ).data as TeamsPaged;
+    },
+    getTeamMembers: async (id: ObjectID): Promise<User[]> => {
+        return (await axiosInstance.get(`/api/teams/${id}/members`))
+            .data as User[];
     },
     createTeam: async (name: string) => {
         await axiosInstance.post("/api/teams/", {

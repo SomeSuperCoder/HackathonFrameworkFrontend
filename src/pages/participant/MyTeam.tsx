@@ -4,9 +4,26 @@ import { NullObjectID } from "@/lib/null_object_id";
 import { useContext } from "react";
 import { Button } from "@/components/ui/button";
 import CreateTeamDialog from "@/components/CreateTeamDialog";
+import { useQuery } from "@tanstack/react-query";
+import { teamDriver } from "@/api/team";
+import { ParseUser } from "@/api/user";
+import InfoAlert from "@/components/InfoAlert";
+import ErrorAlert from "@/components/ErrorAlert";
 
 export default function MyTeam() {
     const user = useContext(UserContext)!;
+
+    const {
+        data: members,
+        isLoading,
+        isError,
+    } = useQuery({
+        queryFn: async () =>
+            (await teamDriver.getTeamMembers(user.team)).map((user) =>
+                ParseUser(user),
+            ),
+        queryKey: ["members"],
+    });
 
     if (user.team.equals(NullObjectID)) {
         return (
@@ -26,5 +43,19 @@ export default function MyTeam() {
         );
     }
 
-    return <PersonEntry user={user} />;
+    if (isLoading) {
+        return <InfoAlert className="Загрузка..." />;
+    }
+
+    if (isError) {
+        return <ErrorAlert className="Ошибка загрузки" />;
+    }
+
+    return (
+        <div>
+            {members!.map((member) => (
+                <PersonEntry user={member} />
+            ))}
+        </div>
+    );
 }

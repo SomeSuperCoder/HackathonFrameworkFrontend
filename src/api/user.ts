@@ -17,7 +17,7 @@ export interface ParsedUser extends Omit<User, "_id" | "team" | "birthdate"> {
     birthdate: Date;
 }
 
-function ParseUser(user: User) {
+export function ParseUser(user: User) {
     return {
         ...user,
         _id: ObjectID(user._id),
