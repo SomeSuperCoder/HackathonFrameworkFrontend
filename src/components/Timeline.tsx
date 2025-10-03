@@ -20,21 +20,10 @@ export default function Timeline(props: { events: EventType[] }) {
                                 </h2>
                                 <p className="leading-7">{e.description}</p>
                                 <code className="bg-muted relative rounded px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold">
-                                    {(() => {
-                                        const day = String(
-                                            e.time.getDate(),
-                                        ).padStart(2, "0"); // dd
-                                        const month = String(
-                                            e.time.getMonth() + 1,
-                                        ).padStart(2, "0"); // mm (months start at 0)
-                                        const year = e.time.getFullYear(); // yyyy
-                                        const hours = e.time.getHours();
-                                        const minutes = String(
-                                            e.time.getMinutes(),
-                                        ).padStart(2, "0");
-
-                                        return `${day}/${month}/${year} в ${hours}:${minutes}`;
-                                    })()}
+                                    {e.time.toLocaleString("ru-RU", {
+                                        dateStyle: "short",
+                                        timeStyle: "short",
+                                    })}
                                 </code>
                             </HoverCardContent>
                         </HoverCard>
