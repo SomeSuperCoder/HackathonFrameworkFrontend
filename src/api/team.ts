@@ -1,4 +1,4 @@
-import type ObjectID from "bson-objectid";
+import ObjectID from "bson-objectid";
 import { axiosInstance } from "./axios";
 import type { ISearchable } from "./searchable";
 import type { User } from "./user";
@@ -15,8 +15,15 @@ export interface Team extends ISearchable {
     grades: Map<string, Map<string, number>>;
 }
 
-export interface TeamParsed extends Omit<Team, "leader"> {
+export interface ParsedTeam extends Omit<Team, "leader"> {
     leader: ObjectID;
+}
+
+export function ParseTeam(team: Team) {
+    return {
+        ...team,
+        leader: ObjectID(team.leader),
+    } as ParsedTeam;
 }
 
 export const teamDriver = {
@@ -24,6 +31,9 @@ export const teamDriver = {
         return (
             await axiosInstance.get(`/api/teams/?page=${page}&limit=${limit}`)
         ).data as TeamsPaged;
+    },
+    getTeamByID: async (id: ObjectID): Promise<Team> => {
+        return (await axiosInstance.get(`/api/teams/${id}`)).data as Team;
     },
     getTeamMembers: async (id: ObjectID): Promise<User[]> => {
         return (await axiosInstance.get(`/api/teams/${id}/members`))

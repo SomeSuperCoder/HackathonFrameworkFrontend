@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { Button } from "@/components/ui/button";
 import CreateTeamDialog from "@/components/CreateTeamDialog";
 import { useQuery } from "@tanstack/react-query";
-import { teamDriver } from "@/api/team";
+import { ParseTeam, teamDriver } from "@/api/team";
 import { ParseUser } from "@/api/user";
 import InfoAlert from "@/components/InfoAlert";
 import ErrorAlert from "@/components/ErrorAlert";
@@ -18,11 +18,16 @@ export default function MyTeam() {
         isLoading,
         isError,
     } = useQuery({
+        queryKey: ["members", user.team],
         queryFn: async () =>
             (await teamDriver.getTeamMembers(user.team)).map((user) =>
                 ParseUser(user),
             ),
-        queryKey: ["members"],
+    });
+
+    const { data: team } = useQuery({
+        queryKey: ["team", user.team],
+        queryFn: async () => ParseTeam(await teamDriver.getTeamByID(user.team)),
     });
 
     if (user.team.equals(NullObjectID)) {
@@ -52,10 +57,20 @@ export default function MyTeam() {
     }
 
     return (
-        <div>
-            {members!.map((member) => (
-                <PersonEntry user={member} />
-            ))}
+        <div className="flex flex-col items-center mt-4 gap-2">
+            <h1 className="scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance">
+                {team?.name}
+            </h1>
+            <div className="flex flex-col items-center">
+                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+                    Участники
+                </h3>
+                <div className="flex flex-col gap-1">
+                    {members?.map((member) => (
+                        <PersonEntry user={member} />
+                    ))}
+                </div>
+            </div>
         </div>
     );
 }
