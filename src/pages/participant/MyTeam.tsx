@@ -1,3 +1,9 @@
+import PersonEntry from "@/components/PersonEntry";
+import { UserContext } from "@/lib/context";
+import { useContext } from "react";
+
 export default function MyTeam() {
-    return <h1>My team</h1>;
+    const user = useContext(UserContext)!;
+
+    return <PersonEntry user={user} />;
 }

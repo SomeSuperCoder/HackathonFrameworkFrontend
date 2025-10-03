@@ -11,6 +11,8 @@ import { TelegramUserContext, UserContext } from "./lib/context";
 import { useQuery } from "@tanstack/react-query";
 import { userDriver } from "./api/user";
 import Participant from "./pages/Participant";
+import ErrorAlert from "./components/ErrorAlert";
+import InfoAlert from "./components/InfoAlert";
 
 init();
 const isDesktop = ["macos", "tdesktop", "unigram"].includes(
@@ -25,7 +27,11 @@ if (isDesktop) {
 
 export default function App() {
     const [tgUser, setTgUser] = useState<User | undefined>(undefined);
-    const { data: user } = useQuery({
+    const {
+        data: user,
+        isLoading,
+        isError,
+    } = useQuery({
         queryKey: ["user"],
         queryFn: userDriver.getMe,
     });
@@ -33,6 +39,22 @@ export default function App() {
     useEffect(() => {
         setTgUser(initData.user());
     }, []);
+
+    if (isLoading) {
+        return (
+            <div className="h-screen flex items-center justify-center">
+                <InfoAlert className="w-fit" message="Загрузка..." />
+            </div>
+        );
+    }
+
+    if (isError) {
+        return (
+            <div className="h-screen flex items-center justify-center">
+                <ErrorAlert className="w-fit" message="Ошибка загрузки" />
+            </div>
+        );
+    }
 
     return (
         <TelegramUserContext.Provider value={tgUser}>

@@ -15,7 +15,7 @@ export default defineConfig({
         allowedHosts: ["hackathonframework.serveo.net"],
         proxy: {
             "/api": {
-                target: "http://localhost:8090",
+                target: "http://192.168.0.109:8090",
                 changeOrigin: true,
                 secure: false,
                 rewrite: (path) => path.replace(/^\/api/, ""),
