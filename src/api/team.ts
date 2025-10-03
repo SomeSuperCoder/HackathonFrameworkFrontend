@@ -1,16 +1,21 @@
+import type ObjectID from "bson-objectid";
 import { axiosInstance } from "./axios";
+import type { ISearchable } from "./searchable";
 
 export interface TeamsPaged {
     teams: Team[];
     count: number;
 }
 
-export interface Team {
-    name: string;
+export interface Team extends ISearchable {
     leader: string;
     repos: string[];
     presentation_uri: string;
     grades: Map<string, Map<string, number>>;
+}
+
+export interface TeamParsed extends Omit<Team, "leader"> {
+    leader: ObjectID;
 }
 
 export const teamDriver = {

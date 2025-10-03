@@ -1,9 +1,9 @@
 import ObjectID from "bson-objectid";
 import { axiosInstance } from "./axios";
+import type { ISearchable } from "./searchable";
 
-export interface User {
+export interface User extends ISearchable {
     _id: string;
-    name: string;
     birthdate: string;
     role: number;
     username: string;
