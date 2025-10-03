@@ -24,4 +24,9 @@ export const teamDriver = {
             await axiosInstance.get(`/api/teams/?page=${page}&limit=${limit}`)
         ).data as TeamsPaged;
     },
+    createTeam: async (name: string) => {
+        await axiosInstance.post("/api/teams/", {
+            name: name,
+        });
+    },
 };

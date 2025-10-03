@@ -12,14 +12,26 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { useState } from "react";
+import { teamDriver } from "@/api/team";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function CreateTeamDialog() {
+    const queryClient = useQueryClient();
+
     const [open, setOpen] = useState(false);
     const [name, setName] = useState("");
 
-    const createTeam = () => {
-        setOpen(false);
-    };
+    const createTeam = useMutation({
+        mutationFn: async (name: string) => {
+            await teamDriver.createTeam(name);
+            setOpen(false);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ["user"],
+            });
+        },
+    });
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -49,7 +61,9 @@ export default function CreateTeamDialog() {
                     <DialogClose asChild>
                         <Button variant="outline">Отмена</Button>
                     </DialogClose>
-                    <Button onClick={createTeam}>Создать</Button>
+                    <Button onClick={() => createTeam.mutate(name)}>
+                        Создать
+                    </Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
