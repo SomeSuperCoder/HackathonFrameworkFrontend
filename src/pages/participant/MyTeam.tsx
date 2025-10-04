@@ -19,7 +19,7 @@ export default function MyTeam() {
         isLoading: teamIsLoading,
         isError: teamIsError,
     } = useQuery({
-        queryKey: ["team", user.team],
+        queryKey: ["team", user.team.toHexString()],
         queryFn: async () => ParseTeam(await teamDriver.getTeamByID(user.team)),
     });
     const {
@@ -27,7 +27,7 @@ export default function MyTeam() {
         isLoading: membersAreLoading,
         isError: membersIsError,
     } = useQuery({
-        queryKey: ["members", user.team],
+        queryKey: ["members", user.team.toHexString()],
         queryFn: async () =>
             (await teamDriver.getTeamMembers(user.team)).map((user) =>
                 ParseUser(user),

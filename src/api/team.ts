@@ -9,19 +9,27 @@ export interface TeamsPaged {
 }
 
 export interface Team extends ISearchable {
+    _id: string;
     leader: string;
     repos: string[];
     presentation_uri: string;
     grades: Map<string, Map<string, number>>;
 }
 
-export interface ParsedTeam extends Omit<Team, "leader"> {
+export interface ParsedTeam extends Omit<Team, "_id" | "leader"> {
+    _id: ObjectID;
     leader: ObjectID;
+}
+
+export interface TeamUpdate {
+    repos?: string[];
+    presentation_uri?: string;
 }
 
 export function ParseTeam(team: Team) {
     return {
         ...team,
+        _id: ObjectID(team._id),
         leader: ObjectID(team.leader),
     } as ParsedTeam;
 }
@@ -43,5 +51,8 @@ export const teamDriver = {
         await axiosInstance.post("/api/teams/", {
             name: name,
         });
+    },
+    updateTeam: async (id: ObjectID, update: TeamUpdate) => {
+        await axiosInstance.patch(`/api/teams/${id}`, update);
     },
 };
