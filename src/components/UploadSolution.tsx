@@ -24,7 +24,7 @@ export default function UploadSolution(props: { team: ParsedTeam }) {
         props.team.presentation_uri,
     );
 
-    const [isOpen, setIsOpen] = useState(false);
+    const [open, setOpen] = useState(false);
 
     const addRepo = () => {
         setRepos([...repos, ""]);
@@ -42,13 +42,13 @@ export default function UploadSolution(props: { team: ParsedTeam }) {
 
     const upload = useMutation({
         mutationFn: async () => {
+            setOpen(false);
             await teamDriver.updateTeam(props.team._id, {
                 repos: repos,
                 presentation_uri: presentationURI,
             });
         },
         onSuccess: () => {
-            setIsOpen(false);
             queryClient.invalidateQueries({
                 queryKey: ["team", props.team._id.toHexString()],
             });
@@ -58,7 +58,7 @@ export default function UploadSolution(props: { team: ParsedTeam }) {
     const editMode = props.team.repos.length || props.team.presentation_uri;
 
     return (
-        <Drawer open={isOpen} onOpenChange={setIsOpen}>
+        <Drawer open={open} onOpenChange={setOpen}>
             <DrawerTrigger>
                 {editMode ? (
                     <Button variant="secondary" size="sm">
