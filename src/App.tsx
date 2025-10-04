@@ -41,11 +41,19 @@ export default function App() {
     }, []);
 
     if (isLoading) {
-        return <InfoAlert message="Загрузка..." />;
+        return (
+            <div className="h-screen">
+                <InfoAlert message="Загрузка..." />
+            </div>
+        );
     }
 
     if (isError) {
-        return <ErrorAlert message="Ошибка загрузки" />;
+        return (
+            <div className="h-screen">
+                <ErrorAlert message="Ошибка загрузки" />
+            </div>
+        );
     }
 
     return (
