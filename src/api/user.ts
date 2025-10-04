@@ -26,8 +26,17 @@ export function ParseUser(user: User) {
     } as ParsedUser;
 }
 
+export interface UserUpdate {
+    name?: string;
+    birthdate?: string;
+    team?: string;
+}
+
 export const userDriver = {
     getMe: async (): Promise<ParsedUser> => {
         return ParseUser((await axiosInstance.get<User>("/api/me")).data);
+    },
+    updateUser: async (id: ObjectID, update: UserUpdate) => {
+        await axiosInstance.patch(`/api/users/${id}`, update);
     },
 };

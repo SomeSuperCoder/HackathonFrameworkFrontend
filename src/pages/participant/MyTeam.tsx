@@ -2,7 +2,6 @@ import PersonEntry from "@/components/PersonEntry";
 import { UserContext } from "@/lib/context";
 import { NullObjectID } from "@/lib/null_object_id";
 import { useContext } from "react";
-import { Button } from "@/components/ui/button";
 import CreateTeamDialog from "@/components/CreateTeamDialog";
 import { useQuery } from "@tanstack/react-query";
 import { ParseTeam, teamDriver } from "@/api/team";
@@ -13,6 +12,7 @@ import UploadSolution from "@/components/UploadSolution";
 import EditTeamNameDialog from "@/components/EditTeamNameDialog";
 import { ButtonGroup } from "@/components/ui/button-group";
 import DeleteTeamDialog from "@/components/DeleteTeamDialog";
+import JoinTeam from "@/components/JoinTeam";
 
 export default function MyTeam() {
     const user = useContext(UserContext)!;
@@ -47,9 +47,7 @@ export default function MyTeam() {
                 </h1>
                 <div className="flex flex-col md:flex-row gap-3">
                     <CreateTeamDialog />
-                    <Button variant="outline">
-                        Присоедениться к существующей
-                    </Button>
+                    <JoinTeam />
                 </div>
             </div>
         );

@@ -57,6 +57,53 @@ export default function UploadSolution(props: { team: ParsedTeam }) {
 
     const editMode = props.team.repos.length || props.team.presentation_uri;
 
+    const DrawerInternals = () => {
+        return (
+            <div className="flex flex-col gap-3 max-w-3/4">
+                <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
+                    Git репозитории
+                    <Button onClick={addRepo} variant="secondary" size="icon">
+                        <CirclePlus />
+                    </Button>
+                </h4>
+                {repos.length ? (
+                    repos.map((repo, i) => {
+                        return (
+                            <div key={i} className="flex">
+                                <Input
+                                    type="url"
+                                    value={repo}
+                                    onChange={(e) =>
+                                        setRepoByIndex(i, e.target.value)
+                                    }
+                                />
+                                <Button
+                                    onClick={() => removeRepo(i)}
+                                    variant="secondary"
+                                    size="icon"
+                                >
+                                    <Trash2 />
+                                </Button>
+                            </div>
+                        );
+                    })
+                ) : (
+                    <p>Отсутствуют, добавьте минимум 1</p>
+                )}
+                <Input
+                    id="presentation_uri"
+                    name="presentation_uri"
+                    type="url"
+                    placeholder="Ссылка на презентацию"
+                    value={presentationURI}
+                    onChange={(e) => setPresentationURI(e.target.value)}
+                />{" "}
+                {upload.isError && (
+                    <UnrwappedErrorAlert message="Введены некорректные ссылки" />
+                )}
+            </div>
+        );
+    };
     return (
         <Drawer open={open} onOpenChange={setOpen}>
             <DrawerTrigger>
@@ -78,58 +125,7 @@ export default function UploadSolution(props: { team: ParsedTeam }) {
                         Заполните информацию о вашем решении
                     </DrawerTitle>
                     <DrawerDescription className="flex justify-center items-center">
-                        <div className="flex flex-col gap-3 max-w-3/4">
-                            <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
-                                Git репозитории
-                                <Button
-                                    onClick={addRepo}
-                                    variant="secondary"
-                                    size="icon"
-                                >
-                                    <CirclePlus />
-                                </Button>
-                            </h4>
-                            {repos.length ? (
-                                repos.map((repo, i) => {
-                                    return (
-                                        <div key={i} className="flex">
-                                            <Input
-                                                type="url"
-                                                value={repo}
-                                                onChange={(e) =>
-                                                    setRepoByIndex(
-                                                        i,
-                                                        e.target.value,
-                                                    )
-                                                }
-                                            />
-                                            <Button
-                                                onClick={() => removeRepo(i)}
-                                                variant="secondary"
-                                                size="icon"
-                                            >
-                                                <Trash2 />
-                                            </Button>
-                                        </div>
-                                    );
-                                })
-                            ) : (
-                                <p>Отсутствуют, добавьте минимум 1</p>
-                            )}
-                            <Input
-                                id="presentation_uri"
-                                name="presentation_uri"
-                                type="url"
-                                placeholder="Ссылка на презентацию"
-                                value={presentationURI}
-                                onChange={(e) =>
-                                    setPresentationURI(e.target.value)
-                                }
-                            />{" "}
-                            {upload.isError && (
-                                <UnrwappedErrorAlert message="Введены некорректные ссылки" />
-                            )}
-                        </div>
+                        <DrawerInternals />
                     </DrawerDescription>
                 </DrawerHeader>
                 <DrawerFooter className="flex flex-row justify-center items-center">
