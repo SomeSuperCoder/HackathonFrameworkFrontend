@@ -11,6 +11,8 @@ import InfoAlert from "@/components/InfoAlert";
 import ErrorAlert from "@/components/ErrorAlert";
 import UploadSolution from "@/components/UploadSolution";
 import EditTeamNameDialog from "@/components/EditTeamNameDialog";
+import { ButtonGroup } from "@/components/ui/button-group";
+import DeleteTeamDialog from "@/components/DeleteTeamDialog";
 
 export default function MyTeam() {
     const user = useContext(UserContext)!;
@@ -65,7 +67,10 @@ export default function MyTeam() {
         <div className="flex flex-col items-center mt-4 gap-4">
             <h1 className="flex gap-3 items-baseline scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance">
                 {team?.name}
-                <EditTeamNameDialog team={team!} />
+                <ButtonGroup>
+                    <EditTeamNameDialog team={team!} />
+                    <DeleteTeamDialog team={team!} />
+                </ButtonGroup>
             </h1>
             {team?.leader.equals(user._id) && <UploadSolution team={team} />}
             <div className="flex flex-col items-center gap-1">

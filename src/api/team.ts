@@ -56,4 +56,7 @@ export const teamDriver = {
     updateTeam: async (id: ObjectID, update: TeamUpdate) => {
         await axiosInstance.patch(`/api/teams/${id}`, update);
     },
+    deleteTeam: async (id: ObjectID) => {
+        await axiosInstance.delete(`/api/teams/${id}`);
+    },
 };
