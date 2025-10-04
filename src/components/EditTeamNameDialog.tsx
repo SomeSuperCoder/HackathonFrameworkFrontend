@@ -27,9 +27,9 @@ export default function EditTeamNameDialog(props: { team: ParsedTeam }) {
             await teamDriver.updateTeam(props.team._id, {
                 name: name,
             });
-            setOpen(false);
         },
         onSuccess: () => {
+            setOpen(false);
             queryClient.invalidateQueries({
                 queryKey: ["team", props.team._id.toHexString()],
             });

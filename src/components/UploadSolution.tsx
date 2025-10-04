@@ -13,16 +13,18 @@ import {
 } from "@/components/ui/drawer";
 import { useState } from "react";
 import { Input } from "./ui/input";
-import { useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import UnrwappedErrorAlert from "./UnwrappedErrorAlert";
 
 export default function UploadSolution(props: { team: ParsedTeam }) {
     const queryClient = useQueryClient();
 
-    const [repos, setRepos] = useState<string[]>([]);
-    const [presentationURI, setPresentationURI] = useState("");
+    const [repos, setRepos] = useState<string[]>(props.team.repos);
+    const [presentationURI, setPresentationURI] = useState(
+        props.team.presentation_uri,
+    );
 
-    const [isError, setIsError] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
 
     const addRepo = () => {
         setRepos([...repos, ""]);
@@ -37,25 +39,26 @@ export default function UploadSolution(props: { team: ParsedTeam }) {
             }),
         );
     };
-    const upload = async () => {
-        try {
+
+    const upload = useMutation({
+        mutationFn: async () => {
             await teamDriver.updateTeam(props.team._id, {
                 repos: repos,
                 presentation_uri: presentationURI,
             });
-        } catch {
-            setIsError(true);
-        }
-
-        queryClient.invalidateQueries({
-            queryKey: ["team", props.team._id.toHexString()],
-        });
-    };
+        },
+        onSuccess: () => {
+            setIsOpen(false);
+            queryClient.invalidateQueries({
+                queryKey: ["team", props.team._id.toHexString()],
+            });
+        },
+    });
 
     const editMode = props.team.repos.length || props.team.presentation_uri;
 
     return (
-        <Drawer>
+        <Drawer open={isOpen} onOpenChange={setIsOpen}>
             <DrawerTrigger>
                 {editMode ? (
                     <Button variant="secondary" size="sm">
@@ -77,7 +80,7 @@ export default function UploadSolution(props: { team: ParsedTeam }) {
                     <DrawerDescription className="flex justify-center items-center">
                         <div className="flex flex-col gap-3 max-w-3/4">
                             <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
-                                Git репозитории{" "}
+                                Git репозитории
                                 <Button
                                     onClick={addRepo}
                                     variant="secondary"
@@ -123,7 +126,7 @@ export default function UploadSolution(props: { team: ParsedTeam }) {
                                     setPresentationURI(e.target.value)
                                 }
                             />{" "}
-                            {isError && (
+                            {upload.isError && (
                                 <UnrwappedErrorAlert message="Введены некорректные ссылки" />
                             )}
                         </div>
@@ -133,7 +136,7 @@ export default function UploadSolution(props: { team: ParsedTeam }) {
                     <DrawerClose>
                         <Button variant="outline">Отмена</Button>
                     </DrawerClose>
-                    <Button onClick={upload} className="w-fit">
+                    <Button onClick={() => upload.mutate()} className="w-fit">
                         {editMode ? "Обновить" : "Загрузить"}
                     </Button>
                 </DrawerFooter>
