@@ -22,6 +22,7 @@ export interface ParsedTeam extends Omit<Team, "_id" | "leader"> {
 }
 
 export interface TeamUpdate {
+    name?: string;
     repos?: string[];
     presentation_uri?: string;
 }

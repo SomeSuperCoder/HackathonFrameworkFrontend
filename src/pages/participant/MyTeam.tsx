@@ -10,6 +10,7 @@ import { ParseUser } from "@/api/user";
 import InfoAlert from "@/components/InfoAlert";
 import ErrorAlert from "@/components/ErrorAlert";
 import UploadSolution from "@/components/UploadSolution";
+import EditTeamNameDialog from "@/components/EditTeamNameDialog";
 
 export default function MyTeam() {
     const user = useContext(UserContext)!;
@@ -62,8 +63,9 @@ export default function MyTeam() {
 
     return (
         <div className="flex flex-col items-center mt-4 gap-4">
-            <h1 className="scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance">
+            <h1 className="flex gap-3 items-baseline scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance">
                 {team?.name}
+                <EditTeamNameDialog team={team!} />
             </h1>
             {team?.leader.equals(user._id) && <UploadSolution team={team} />}
             <div className="flex flex-col items-center gap-1">
@@ -71,8 +73,8 @@ export default function MyTeam() {
                     Участники
                 </h3>
                 <div className="flex flex-col gap-1">
-                    {members?.map((member) => (
-                        <PersonEntry user={member} />
+                    {members?.map((member, i) => (
+                        <PersonEntry key={i} user={member} />
                     ))}
                 </div>
             </div>
