@@ -11,8 +11,8 @@ import { TelegramUserContext, UserContext } from "./lib/context";
 import { useQuery } from "@tanstack/react-query";
 import { userDriver } from "./api/user";
 import Participant from "./pages/Participant";
-import ErrorAlert from "./components/ErrorAlert";
-import InfoAlert from "./components/InfoAlert";
+import ErrorAlert from "@/components/alerts/ErrorAlert";
+import InfoAlert from "@/components/alerts/InfoAlert";
 
 init();
 const isDesktop = ["macos", "tdesktop", "unigram"].includes(

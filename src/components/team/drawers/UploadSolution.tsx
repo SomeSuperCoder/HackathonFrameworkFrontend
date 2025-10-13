@@ -1,5 +1,5 @@
 import { teamDriver, type ParsedTeam } from "@/api/team";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 import { Upload, SquarePen, CirclePlus, Trash2 } from "lucide-react";
 import {
     Drawer,
@@ -12,9 +12,9 @@ import {
     DrawerTrigger,
 } from "@/components/ui/drawer";
 import { useState } from "react";
-import { Input } from "./ui/input";
+import { Input } from "@/components/ui/input";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import UnrwappedErrorAlert from "./UnwrappedErrorAlert";
+import UnrwappedErrorAlert from "@/components/alerts/UnwrappedErrorAlert";
 
 export default function UploadSolution(props: { team: ParsedTeam }) {
     const queryClient = useQueryClient();

@@ -1,6 +1,6 @@
 import { ParseEvent, type Event as EventType } from "@/api/event";
 import Event from "./Event";
-import { HoverCard, HoverCardContent } from "./ui/hover-card";
+import { HoverCard, HoverCardContent } from "@/components/ui/hover-card";
 import { HoverCardTrigger } from "@radix-ui/react-hover-card";
 
 export default function Timeline(props: { events: EventType[] }) {

@@ -1,18 +1,18 @@
-import PersonEntry from "@/components/PersonEntry";
+import PersonEntry from "@/components/team/PersonEntry";
 import { UserContext } from "@/lib/context";
 import { UndefinedObjectID } from "@/lib/null_object_id";
 import { useContext } from "react";
-import CreateTeamDialog from "@/components/CreateTeamDialog";
+import CreateTeamDialog from "@/components/team/dialogs/CreateTeamDialog";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ParseTeam, teamDriver } from "@/api/team";
 import { ParseUser, userDriver } from "@/api/user";
-import InfoAlert from "@/components/InfoAlert";
-import ErrorAlert from "@/components/ErrorAlert";
-import UploadSolution from "@/components/UploadSolution";
-import EditTeamNameDialog from "@/components/EditTeamNameDialog";
+import InfoAlert from "@/components/alerts/InfoAlert";
+import ErrorAlert from "@/components/alerts/ErrorAlert";
+import UploadSolution from "@/components/team/drawers/UploadSolution";
+import EditTeamNameDialog from "@/components/team/dialogs/EditTeamNameDialog";
 import { ButtonGroup } from "@/components/ui/button-group";
-import DeleteTeamDialog from "@/components/DeleteTeamDialog";
-import JoinTeam from "@/components/JoinTeam";
+import DeleteTeamDialog from "@/components/team/dialogs/DeleteTeamDialog";
+import JoinTeam from "@/components/team/JoinTeam";
 import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
 

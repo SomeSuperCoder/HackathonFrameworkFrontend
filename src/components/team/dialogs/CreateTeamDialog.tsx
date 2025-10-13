@@ -8,30 +8,27 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useState } from "react";
-import { teamDriver, type ParsedTeam } from "@/api/team";
+import { teamDriver } from "@/api/team";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { CircleAlert, Pencil } from "lucide-react";
 
-export default function EditTeamNameDialog(props: { team: ParsedTeam }) {
+export default function CreateTeamDialog() {
     const queryClient = useQueryClient();
 
     const [open, setOpen] = useState(false);
     const [name, setName] = useState("");
 
-    const updateTeam = useMutation({
+    const createTeam = useMutation({
         mutationFn: async (name: string) => {
-            await teamDriver.updateTeam(props.team._id, {
-                name: name,
-            });
+            setOpen(false);
+            await teamDriver.createTeam(name);
         },
         onSuccess: () => {
-            setOpen(false);
             queryClient.invalidateQueries({
-                queryKey: ["team", props.team._id.toHexString()],
+                queryKey: ["user"],
             });
         },
     });
@@ -39,18 +36,14 @@ export default function EditTeamNameDialog(props: { team: ParsedTeam }) {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button variant="secondary" size="icon">
-                    <Pencil />
-                </Button>
+                <Button variant="default">Создать свою</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Переименование команды</DialogTitle>
+                    <DialogTitle>Создание команды</DialogTitle>
                     <DialogDescription>
-                        <p className="flex gap-1">
-                            <CircleAlert /> НЕ МЕНЯЙТЕ НАЗВАНИЕ КОМНДЫ ЕСЛИ
-                            КОНКУРС УЖЕ НАЧАЛСЯ
-                        </p>
+                        Придумайте креативное название своей команды и нажмите
+                        Cоздать
                     </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4">
@@ -68,8 +61,8 @@ export default function EditTeamNameDialog(props: { team: ParsedTeam }) {
                     <DialogClose asChild>
                         <Button variant="outline">Отмена</Button>
                     </DialogClose>
-                    <Button onClick={() => updateTeam.mutate(name)}>
-                        Переименовать
+                    <Button onClick={() => createTeam.mutate(name)}>
+                        Создать
                     </Button>
                 </DialogFooter>
             </DialogContent>

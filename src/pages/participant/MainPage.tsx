@@ -1,5 +1,5 @@
 import type { Event } from "@/api/event";
-import Timeline from "@/components/Timeline";
+import Timeline from "@/components/timeline/Timeline";
 
 export default function MainPage() {
     const events = [

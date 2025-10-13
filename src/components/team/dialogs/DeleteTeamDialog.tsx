@@ -9,7 +9,7 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { teamDriver, type ParsedTeam } from "@/api/team";
 import { useMutation, useQueryClient } from "@tanstack/react-query";

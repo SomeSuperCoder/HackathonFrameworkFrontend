@@ -1,5 +1,5 @@
 import type { ParsedUser } from "@/api/user";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 import { Send } from "lucide-react";
 import { openTelegramLink } from "@telegram-apps/sdk";
 
