@@ -14,19 +14,19 @@ import Participant from "./pages/Participant";
 import ErrorAlert from "@/components/alerts/ErrorAlert";
 import InfoAlert from "@/components/alerts/InfoAlert";
 
-init();
-const isDesktop = ["macos", "tdesktop", "unigram"].includes(
-    retrieveLaunchParams().tgWebAppPlatform,
-);
-await viewport.mount();
-initData.restore();
+// init();
+// const isDesktop = ["macos", "tdesktop", "unigram"].includes(
+// retrieveLaunchParams().tgWebAppPlatform,
+// );
+// await viewport.mount();
+// initData.restore();
 // viewport.expand();
-if (isDesktop) {
-    await viewport.requestFullscreen();
-}
+// if (isDesktop) {
+// await viewport.requestFullscreen();
+// }
 
 export default function App() {
-    const [tgUser, setTgUser] = useState<User | undefined>(undefined);
+    // const [tgUser, setTgUser] = useState<User | undefined>(undefined);
     const {
         data: user,
         isLoading,
@@ -37,7 +37,7 @@ export default function App() {
     });
 
     useEffect(() => {
-        setTgUser(initData.user());
+        // setTgUser(initData.user());
     }, []);
 
     if (isLoading) {
@@ -57,12 +57,12 @@ export default function App() {
     }
 
     return (
-        <TelegramUserContext.Provider value={tgUser}>
-            <UserContext.Provider value={user}>
-                <Routes>
-                    <Route index element={<Participant />} />
-                </Routes>
-            </UserContext.Provider>
-        </TelegramUserContext.Provider>
+        // <TelegramUserContext.Provider value={tgUser}>
+        <UserContext.Provider value={user}>
+            <Routes>
+                <Route index element={<Participant />} />
+            </Routes>
+        </UserContext.Provider>
+        // </TelegramUserContext.Provider>
     );
 }
