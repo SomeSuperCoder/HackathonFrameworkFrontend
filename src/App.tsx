@@ -19,43 +19,43 @@ import InfoAlert from "@/components/alerts/InfoAlert";
 // }
 
 export default function App() {
-    // const [tgUser, setTgUser] = useState<User | undefined>(undefined);
-    const {
-        data: user,
-        isLoading,
-        isError,
-    } = useQuery({
-        queryKey: ["user"],
-        queryFn: userDriver.getMe,
-    });
+  // const [tgUser, setTgUser] = useState<User | undefined>(undefined);
+  const {
+    data: user,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["user"],
+    queryFn: userDriver.getMe,
+  });
 
-    useEffect(() => {
-        // setTgUser(initData.user());
-    }, []);
+  useEffect(() => {
+    // setTgUser(initData.user());
+  }, []);
 
-    if (isLoading) {
-        return (
-            <div className="h-screen">
-                <InfoAlert message="Загрузка..." />
-            </div>
-        );
-    }
-
-    if (isError) {
-        return (
-            <div className="h-screen">
-                <ErrorAlert message="Ошибка загрузки" />
-            </div>
-        );
-    }
-
+  if (isLoading) {
     return (
-        // <TelegramUserContext.Provider value={tgUser}>
-        <UserContext.Provider value={user}>
-            <Routes>
-                <Route index element={<Participant />} />
-            </Routes>
-        </UserContext.Provider>
-        // </TelegramUserContext.Provider>
+      <div className="h-screen">
+        <InfoAlert message="Загрузка..." />
+      </div>
     );
+  }
+
+  if (isError) {
+    return (
+      <div className="h-screen">
+        <ErrorAlert message="Ошибка загрузки" />
+      </div>
+    );
+  }
+
+  return (
+    // <TelegramUserContext.Provider value={tgUser}>
+    <UserContext.Provider value={user}>
+      <Routes>
+        <Route index element={<Participant />} />
+      </Routes>
+    </UserContext.Provider>
+    // </TelegramUserContext.Provider>
+  );
 }

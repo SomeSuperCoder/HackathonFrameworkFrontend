@@ -1,3 +1,3 @@
 export interface ISearchable {
-    name: string;
+  name: string;
 }
