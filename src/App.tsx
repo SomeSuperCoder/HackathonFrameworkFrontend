@@ -1,13 +1,6 @@
-import {
-    init,
-    initData,
-    retrieveLaunchParams,
-    viewport,
-    type User,
-} from "@telegram-apps/sdk";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
-import { TelegramUserContext, UserContext } from "./lib/context";
+import { UserContext } from "./lib/context";
 import { useQuery } from "@tanstack/react-query";
 import { userDriver } from "./api/user";
 import Participant from "./pages/Participant";
