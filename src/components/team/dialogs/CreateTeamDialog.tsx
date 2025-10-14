@@ -24,7 +24,9 @@ export default function CreateTeamDialog() {
     const createTeam = useMutation({
         mutationFn: async (name: string) => {
             setOpen(false);
-            await teamDriver.createTeam(name);
+            await teamDriver.create({
+                name: name,
+            });
         },
         onSuccess: () => {
             queryClient.invalidateQueries({

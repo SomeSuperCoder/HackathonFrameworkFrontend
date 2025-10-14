@@ -33,7 +33,7 @@ export default function JoinTeam() {
         isError,
     } = useQuery({
         queryKey: ["teams"],
-        queryFn: async () => await teamDriver.getTeams(1, 1_000_000_000),
+        queryFn: async () => await teamDriver.findPaged(1, 1_000_000_000),
     });
 
     const joinTeam = useMutation({
@@ -58,7 +58,7 @@ export default function JoinTeam() {
         return <Button variant="destructive">Ошибка загрузки команд!</Button>;
     }
 
-    const teams = teamsPaged!.teams;
+    const teams = teamsPaged!.values;
 
     return (
         <Popover open={open} onOpenChange={setOpen}>

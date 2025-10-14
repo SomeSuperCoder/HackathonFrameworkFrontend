@@ -24,7 +24,7 @@ export default function EditTeamNameDialog(props: { team: ParsedTeam }) {
 
     const updateTeam = useMutation({
         mutationFn: async (name: string) => {
-            await teamDriver.updateTeam(props.team._id, {
+            await teamDriver.update(props.team._id, {
                 name: name,
             });
         },

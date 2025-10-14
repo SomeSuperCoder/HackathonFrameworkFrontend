@@ -43,7 +43,7 @@ export default function UploadSolution(props: { team: ParsedTeam }) {
     const upload = useMutation({
         mutationFn: async () => {
             setOpen(false);
-            await teamDriver.updateTeam(props.team._id, {
+            await teamDriver.update(props.team._id, {
                 repos: repos,
                 presentation_uri: presentationURI,
             });
@@ -106,7 +106,7 @@ export default function UploadSolution(props: { team: ParsedTeam }) {
     };
     return (
         <Drawer open={open} onOpenChange={setOpen}>
-            <DrawerTrigger>
+            <DrawerTrigger asChild>
                 {editMode ? (
                     <Button variant="secondary" size="sm">
                         Редактировать решение

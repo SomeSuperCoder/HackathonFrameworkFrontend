@@ -19,7 +19,7 @@ class Api<Normal, Parsed, CreateRequest, UpdateRequest> {
 
     public async getByID(id: ObjectID): Promise<Parsed> {
         return this.parserFunc(
-            (await axiosInstance.get<Normal>(this._withID(id))).data,
+            (await axiosInstance.get<Normal>(this.withID(id))).data,
         );
     }
 
@@ -28,19 +28,19 @@ class Api<Normal, Parsed, CreateRequest, UpdateRequest> {
     }
 
     public async update(id: ObjectID, request: UpdateRequest) {
-        await axiosInstance.patch(this._withID(id), request);
+        await axiosInstance.patch(this.withID(id), request);
     }
 
     public async delete(id: ObjectID) {
-        await axiosInstance.delete(this._withID(id));
+        await axiosInstance.delete(this.withID(id));
     }
 
-    private _withID(id: ObjectID): string {
+    protected withID(id: ObjectID): string {
         return `${this.route}/${id}`;
     }
 }
 
-class ApiPaged<Normal, Parsed, CreateRequest, UpdateRequest> extends Api<
+export class ApiPaged<Normal, Parsed, CreateRequest, UpdateRequest> extends Api<
     Normal,
     Parsed,
     CreateRequest,
@@ -67,12 +67,12 @@ class ApiPaged<Normal, Parsed, CreateRequest, UpdateRequest> extends Api<
     }
 }
 
-class ApiClassic<Normal, Parsed, CreateRequest, UpdateRequest> extends Api<
+export class ApiClassic<
     Normal,
     Parsed,
     CreateRequest,
-    UpdateRequest
-> {
+    UpdateRequest,
+> extends Api<Normal, Parsed, CreateRequest, UpdateRequest> {
     constructor(route: string, parserFunc: (normal: Normal) => Parsed) {
         super(route, parserFunc);
     }

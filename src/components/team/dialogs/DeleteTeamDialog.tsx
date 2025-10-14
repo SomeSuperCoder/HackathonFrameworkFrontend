@@ -23,7 +23,7 @@ export default function DeleteTeamDialog(props: { team: ParsedTeam }) {
     const deleteTeam = useMutation({
         mutationFn: async () => {
             setOpen(false);
-            await teamDriver.deleteTeam(props.team._id);
+            await teamDriver.delete(props.team._id);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({

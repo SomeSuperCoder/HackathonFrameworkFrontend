@@ -1,24 +1,8 @@
 import ObjectID from "bson-objectid";
-import { axiosInstance } from "./axios";
 import type { ISearchable } from "./searchable";
-import type { User } from "./user";
-
-export interface TeamsPaged {
-    teams: Team[];
-    count: number;
-}
-
-export interface ParsedTeamsPaged {
-    teams: ParsedTeam[];
-    count: number;
-}
-
-export function ParseTeamsPaged(teamsPaged: TeamsPaged) {
-    return {
-        teams: teamsPaged.teams.map((team) => ParseTeam(team)),
-        count: teamsPaged.count,
-    } as ParsedTeamsPaged;
-}
+import { ApiPaged } from "./generic";
+import { axiosInstance } from "./axios";
+import { ParseUser, type ParsedUser, type User } from "./user";
 
 export interface Team extends ISearchable {
     _id: string;
@@ -33,7 +17,7 @@ export interface ParsedTeam extends Omit<Team, "_id" | "leader"> {
     leader: ObjectID;
 }
 
-export function ParseTeam(team: Team) {
+function parseTeam(team: Team) {
     return {
         ...team,
         _id: ObjectID(team._id),
@@ -47,35 +31,20 @@ export interface TeamUpdate {
     presentation_uri?: string;
 }
 
-export const teamDriver = {
-    getTeams: async (
-        page: number,
-        limit: number,
-    ): Promise<ParsedTeamsPaged> => {
-        return ParseTeamsPaged(
-            (
-                await axiosInstance.get<TeamsPaged>(
-                    `/api/teams/?page=${page}&limit=${limit}`,
-                )
-            ).data,
-        );
-    },
-    getTeamByID: async (id: ObjectID): Promise<Team> => {
-        return (await axiosInstance.get(`/api/teams/${id}`)).data as Team;
-    },
-    getTeamMembers: async (id: ObjectID): Promise<User[]> => {
-        return (await axiosInstance.get(`/api/teams/${id}/members`))
-            .data as User[];
-    },
-    createTeam: async (name: string) => {
-        await axiosInstance.post("/api/teams/", {
-            name: name,
-        });
-    },
-    updateTeam: async (id: ObjectID, update: TeamUpdate) => {
-        await axiosInstance.patch(`/api/teams/${id}`, update);
-    },
-    deleteTeam: async (id: ObjectID) => {
-        await axiosInstance.delete(`/api/teams/${id}`);
-    },
-};
+export interface TeamCreate {
+    name: string;
+}
+
+class TeamsApi extends ApiPaged<Team, ParsedTeam, TeamCreate, TeamUpdate> {
+    constructor() {
+        super("teams", parseTeam);
+    }
+
+    public async getMembers(id: ObjectID): Promise<ParsedUser[]> {
+        return (
+            await axiosInstance.get<User[]>(`${this.withID(id)}/members`)
+        ).data.map((v) => ParseUser(v));
+    }
+}
+
+export const teamDriver = new TeamsApi();

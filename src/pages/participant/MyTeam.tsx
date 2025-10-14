@@ -4,8 +4,8 @@ import { UndefinedObjectID } from "@/lib/null_object_id";
 import { useContext } from "react";
 import CreateTeamDialog from "@/components/team/dialogs/CreateTeamDialog";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ParseTeam, teamDriver } from "@/api/team";
-import { ParseUser, userDriver } from "@/api/user";
+import { teamDriver } from "@/api/team";
+import { userDriver } from "@/api/user";
 import InfoAlert from "@/components/alerts/InfoAlert";
 import ErrorAlert from "@/components/alerts/ErrorAlert";
 import UploadSolution from "@/components/team/drawers/UploadSolution";
@@ -27,7 +27,7 @@ export default function MyTeam() {
         isError: teamIsError,
     } = useQuery({
         queryKey: ["team", user.team.toHexString()],
-        queryFn: async () => ParseTeam(await teamDriver.getTeamByID(user.team)),
+        queryFn: async () => teamDriver.getByID(user.team),
     });
     const {
         data: members,
@@ -35,10 +35,7 @@ export default function MyTeam() {
         isError: membersIsError,
     } = useQuery({
         queryKey: ["members", user.team.toHexString()],
-        queryFn: async () =>
-            (await teamDriver.getTeamMembers(user.team)).map((user) =>
-                ParseUser(user),
-            ),
+        queryFn: async () => teamDriver.getMembers(user.team),
     });
 
     const leaveTeam = useMutation({
