@@ -8,13 +8,13 @@ import { teamDriver } from "@/api/team";
 import { userDriver } from "@/api/user";
 import InfoAlert from "@/components/alerts/InfoAlert";
 import ErrorAlert from "@/components/alerts/ErrorAlert";
-import UploadSolution from "@/components/team/drawers/UploadSolution";
 import EditTeamNameDialog from "@/components/team/dialogs/EditTeamNameDialog";
 import { ButtonGroup } from "@/components/ui/button-group";
 import DeleteTeamDialog from "@/components/team/dialogs/DeleteTeamDialog";
 import JoinTeam from "@/components/team/JoinTeam";
 import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
+import UploadSolutionDialog from "@/components/team/dialogs/UploadSolutionDialog";
 
 export default function MyTeam() {
   const queryClient = useQueryClient();
@@ -94,7 +94,7 @@ export default function MyTeam() {
           </Button>
         )}
       </h1>
-      {team?.leader.equals(user._id) && <UploadSolution team={team} />}
+      {team?.leader.equals(user._id) && <UploadSolutionDialog team={team} />}
       <div className="flex flex-col items-center gap-1">
         <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
           Участники
